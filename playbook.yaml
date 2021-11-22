@@ -1,0 +1,40 @@
+---
+- name: arocreate
+  hosts: localhost
+  tasks:
+  - name: Create openshift cluster
+    azure.azcollection.azure_rm_openshiftmanagedcluster:
+      name: "myCluster"
+      location: "canadacentral"
+      api_server_profile:
+        visibility: "Public"
+      ingress_profiles:
+        - name: default
+          visibility: "Public"
+      master_profile:
+        vm_size : "Standard_D8s_v3"
+        subnet_id: "/subscriptions/xx-xx-xx-xx-xx/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/master"
+      network_profile:
+        pod_cidr: "10.128.0.0/14"
+        service_cidr: "172.30.0.0/16"
+      resource_group: "rg-sandbox-cac-tempmshire"
+      service_principal_profile:
+        client_id: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        client_secret: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+      state: "present"
+      subscription_id: "a3741971-ecbc-4ff7-8ede-b1b0fd4f2865"
+      tags:
+        Application: "OpenShiftPlatform"
+        OperatingUnit: "Ledcor OPS"
+        BusinessContact: "Michael Shire"
+        BackupGroup: "backup01"
+        HARequirements: "no"
+        BusinessCriticality: "Low"
+        Environment: "non-prod"
+      tenant: "e4ab1aeb-19aa-4473-ad4a-981c6d9ca982"
+      worker_profiles:
+        - vm_size : "Standard_D4s_v3"
+          name: worker
+          subnet_id : "/subscriptions/xx-xx-xx-xx-xx/resourceGroups/myResourceGroup/Microsoft.Network/virtualNetworks/myVnet/subnets/worker"
+          disk_size : 128
+          count : 3
